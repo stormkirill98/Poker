@@ -63,6 +63,8 @@ void Menu::SetConnected(bool IsConnected)
 	m_Port.EnableWindow(!IsConnected);
 	m_UserName.EnableWindow(!IsConnected);
 	GetDlgItem(IDC_CONNECT)->EnableWindow(!IsConnected);
+	GetDlgItem(IDC_DISCONNECT)->EnableWindow(IsConnected);
+
 }
 
 void Menu::OnClickedConnect()
@@ -143,7 +145,6 @@ void Menu::OnClickedDisconnect()
 
 void Menu::OnBnClickedCancel()
 {
-	// TODO: добавьте свой код обработчика уведомлений
 	CDialogEx::OnCancel();
 }
 

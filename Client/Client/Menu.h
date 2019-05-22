@@ -1,8 +1,6 @@
 ﻿#pragma once
 
 
-// Диалоговое окно Menu
-
 class Menu : public CDialogEx
 {
 	DECLARE_DYNAMIC(Menu)
@@ -11,7 +9,6 @@ public:
 	Menu(CWnd* pParent = nullptr);   // стандартный конструктор
 	virtual ~Menu();
 
-// Данные диалогового окна
 #ifdef AFX_DESIGN_TIME
 	enum { IDD = IDD_MENU };
 #endif

@@ -7,6 +7,7 @@
 #include "string"
 #include "afxdialogex.h"
 
+#define DEFAULT_PORT	5150
 
 // Диалоговое окно Menu
 
@@ -45,7 +46,10 @@ BOOL Menu::OnInitDialog()
 	CDialogEx::OnInitDialog();
 
 	// TODO:  Добавить дополнительную инициализацию
-	m_Port.SetWindowTextA("5150");
+	char port[128];
+	sprintf_s(port, sizeof(port), "%d", DEFAULT_PORT);
+
+	m_Port.SetWindowTextA(LPTSTR(port));
 	m_Server.SetWindowTextA("localhost");
 	m_UserName.SetWindowTextA(LPTSTR(m_UserNameStr));
 
@@ -148,5 +152,61 @@ void Menu::OnBnClickedCancel()
 	CDialogEx::OnCancel();
 }
 
-
-
+//void CClientDlg::OnBnClickedSend()
+//{
+//	// TODO: Add your control notification handler code here
+//	char	szMessage[1024];		// Сообщение для отправки
+//	BOOL	bSendOnly = FALSE;	// Только отправка данных
+//
+//	char	szBuffer[DEFAULT_BUFFER];
+//	int		ret,
+//			i;
+//
+//	char	Str[256];
+//
+//	UpdateData();
+//	if (m_Number < 1 || m_Number>20)
+//	{
+//		m_ListBox.AddString("Number of messages must be between 1 and 20");
+//		return;
+//	}
+//
+//	GetDlgItem(IDC_MESSAGE)->GetWindowText(szMessage, sizeof(szMessage));
+//	if (m_NoEcho.GetCheck() == 1)
+//		bSendOnly = TRUE;
+//
+//	// Отправка и прием данных 
+//	//
+//	for (i = 0; i < m_Number; i++)
+//	{
+//		ret = send(m_sClient, szMessage, strlen(szMessage), 0);
+//
+//		if (ret == 0)
+//			break;
+//		else if (ret == SOCKET_ERROR)
+//		{
+//			sprintf_s(Str, sizeof(Str), "send() failed: %d", WSAGetLastError());
+//			m_ListBox.AddString((LPTSTR)Str);
+//			break;
+//		}
+//
+//		sprintf_s(Str, sizeof(Str), "Send %d bytes\n", ret);
+//		m_ListBox.AddString((LPTSTR)Str);
+//
+//		if (!bSendOnly)
+//		{
+//			ret = recv(m_sClient, szBuffer, DEFAULT_BUFFER, 0);
+//			if (ret == 0)	// Корректное завершение
+//				break;
+//			else if (ret == SOCKET_ERROR)
+//			{
+//				sprintf_s(Str, sizeof(Str), "recv() failed: %d", WSAGetLastError());
+//				m_ListBox.AddString((LPTSTR)Str);
+//				break;
+//			}
+//			szBuffer[ret] = '\0';
+//			sprintf_s(Str, sizeof(Str), "RECV [%d bytes]: '%s'", ret, szBuffer);
+//			m_ListBox.AddString((LPTSTR)Str);
+//		}
+//	}
+//}

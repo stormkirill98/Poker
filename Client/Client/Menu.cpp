@@ -39,6 +39,18 @@ END_MESSAGE_MAP()
 
 // Обработчики сообщений Menu
 
+BOOL Menu::OnInitDialog()
+{
+	CDialogEx::OnInitDialog();
+
+	// TODO:  Добавить дополнительную инициализацию
+	m_Port.SetWindowTextA("5150");
+	m_Server.SetWindowTextA("localhost");
+	m_UserName.SetWindowTextA("player_name");
+
+	return TRUE;  // return TRUE unless you set the focus to a control
+				  // Исключение: страница свойств OCX должна возвращать значение FALSE
+}
 
 void Menu::OnClickedConnect()
 {
@@ -57,3 +69,6 @@ void Menu::OnBnClickedCancel()
 	// TODO: добавьте свой код обработчика уведомлений
 	CDialogEx::OnCancel();
 }
+
+
+

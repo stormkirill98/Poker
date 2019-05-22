@@ -28,4 +28,5 @@ public:
 	CEdit m_Port;
 	CEdit m_Server;
 	CEdit m_UserName;
+	virtual BOOL OnInitDialog();
 };

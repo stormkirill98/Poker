@@ -4,6 +4,7 @@
 #include "stdafx.h"
 #include "Client.h"
 #include "Menu.h"
+#include "string"
 #include "afxdialogex.h"
 
 
@@ -46,7 +47,7 @@ BOOL Menu::OnInitDialog()
 	// TODO:  Добавить дополнительную инициализацию
 	m_Port.SetWindowTextA("5150");
 	m_Server.SetWindowTextA("localhost");
-	m_UserName.SetWindowTextA("player_name");
+	m_UserName.SetWindowTextA(LPTSTR(m_UserNameStr));
 
 	SetConnected(m_IsConnected);
 
@@ -58,8 +59,9 @@ void Menu::SetConnected(bool IsConnected)
 {
 	m_IsConnected = IsConnected;
 
-	GetDlgItem(IDC_SERVER)->EnableWindow(!IsConnected);
-	GetDlgItem(IDC_PORT)->EnableWindow(!IsConnected);
+	m_Server.EnableWindow(!IsConnected);
+	m_Port.EnableWindow(!IsConnected);
+	m_UserName.EnableWindow(!IsConnected);
 	GetDlgItem(IDC_CONNECT)->EnableWindow(!IsConnected);
 }
 
@@ -75,18 +77,18 @@ void Menu::OnClickedConnect()
 
 	char Str[256];
 
-	GetDlgItem(IDC_SERVER)->GetWindowText(szServer, sizeof(szServer));
-	GetDlgItem(IDC_PORT)->GetWindowText(Str, sizeof(Str));
+	m_Server.GetWindowText(szServer, sizeof(szServer));
+	m_Port.GetWindowText(Str, sizeof(Str));
 	iPort = atoi(Str);
 	if (iPort <= 0 || iPort >= 0x10000)
 	{
-		AfxMessageBox((LPTSTR)"Port number incorrect");
+		AfxMessageBox((LPTSTR)"Port number incorrect", MB_ICONSTOP);
 		return;
 	}
 
 	if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
 	{
-		AfxMessageBox((LPTSTR)"Failed to load Winsock library!");
+		AfxMessageBox((LPTSTR)"Failed to load Winsock library!", MB_ICONSTOP);
 		return;
 	}
 
@@ -94,7 +96,7 @@ void Menu::OnClickedConnect()
 	if (m_sClient == INVALID_SOCKET)
 	{
 		sprintf_s(Str, sizeof(Str), "socket() failed: %d\n", WSAGetLastError());
-		AfxMessageBox((LPTSTR)Str);
+		AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 		return;
 	}
 	server.sin_family = AF_INET;
@@ -107,7 +109,7 @@ void Menu::OnClickedConnect()
 		if (host == NULL)
 		{
 			sprintf_s(Str, sizeof(Str), "Unable to resolve server: %s", szServer);
-			AfxMessageBox((LPTSTR)Str);
+			AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 			return;
 		}
 		CopyMemory(&server.sin_addr, host->h_addr_list[0], host->h_length);
@@ -115,11 +117,19 @@ void Menu::OnClickedConnect()
 	if (connect(m_sClient, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 	{
 		sprintf_s(Str, sizeof(Str), "connect() failed: %d", WSAGetLastError());
-		AfxMessageBox((LPTSTR)Str);
+		AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 		return;
 	}
 
 	SetConnected(true);
+
+	m_UserName.GetWindowText(m_UserNameStr, sizeof(m_UserNameStr));
+
+	std::string successMsg = "Success connect to ";
+	successMsg.append(host->h_name);
+	AfxMessageBox((LPSTR)successMsg.c_str(), MB_ICONINFORMATION);
+
+	this->OnCancel();
 }
 
 

@@ -25,6 +25,7 @@ public:
 	afx_msg void OnClickedDisconnect();
 	afx_msg void OnBnClickedCancel();
 
+	char	m_UserNameStr[256];
 	bool	m_IsConnected;
 	SOCKET	m_sClient;
 	void	SetConnected(bool IsConnected);

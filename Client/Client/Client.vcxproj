@@ -208,7 +208,9 @@
     <None Include="res\Client.rc2" />
   </ItemGroup>
   <ItemGroup>
+    <Image Include="..\images\bitmap2.bmp" />
     <Image Include="..\images\table.bmp" />
+    <Image Include="res\bitmap1.bmp" />
     <Image Include="res\Client.ico" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

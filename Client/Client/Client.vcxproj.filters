@@ -62,5 +62,11 @@
     <Image Include="..\images\table.bmp">
       <Filter>Resource Files</Filter>
     </Image>
+    <Image Include="..\images\bitmap2.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
+    <Image Include="res\bitmap1.bmp">
+      <Filter>Resource Files</Filter>
+    </Image>
   </ItemGroup>
 </Project>

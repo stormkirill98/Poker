@@ -25,6 +25,10 @@ public:
 	afx_msg void OnClickedDisconnect();
 	afx_msg void OnBnClickedCancel();
 
+	bool	m_IsConnected;
+	SOCKET	m_sClient;
+	void	SetConnected(bool IsConnected);
+
 	CEdit m_Port;
 	CEdit m_Server;
 	CEdit m_UserName;

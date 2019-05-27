@@ -26,6 +26,11 @@ void Player::SetBank(int bank)
 	m_Bank = bank;
 }
 
+void Player::SetFold(bool fold)
+{
+	m_Fold = fold;
+}
+
 CString Player::GetName()
 {
 	return m_Name;
@@ -39,4 +44,9 @@ int Player::GetBet()
 int Player::GetBank()
 {
 	return m_Bank;
+}
+
+bool Player::IsFold()
+{
+	return m_Fold;
 }

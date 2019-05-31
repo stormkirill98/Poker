@@ -22,7 +22,7 @@ public:
 	afx_msg void OnClickedDisconnect();
 	afx_msg void OnBnClickedCancel();
 
-	char	m_UserNameStr[256];
+	std::string	m_UserNameStr;
 	bool	m_IsConnected;
 	SOCKET	m_sClient;
 	void	SetConnected(bool IsConnected);

@@ -51,7 +51,7 @@ BOOL Menu::OnInitDialog()
 
 	m_Port.SetWindowTextA(LPTSTR(port));
 	m_Server.SetWindowTextA("localhost");
-	m_UserName.SetWindowTextA(LPTSTR(m_UserNameStr));
+	m_UserName.SetWindowTextA(m_UserNameStr.c_str);
 
 	SetConnected(m_IsConnected);
 
@@ -129,7 +129,7 @@ void Menu::OnClickedConnect()
 
 	SetConnected(true);
 
-	m_UserName.GetWindowText(m_UserNameStr, sizeof(m_UserNameStr));
+	m_UserName.GetWindowTextA((LPTSTR)m_UserNameStr.c_str(), sizeof(m_UserNameStr.c_str()));
 
 	std::string successMsg = "Success connect to ";
 	successMsg.append(host->h_name);

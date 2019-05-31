@@ -6,8 +6,8 @@ Player::Player()
 {
 }
 
-Player::Player(CString name)
-	: m_Name(name)
+Player::Player(CString ip, CString name)
+	: m_Name(name), m_Ip(ip)
 {
 }
 
@@ -31,6 +31,11 @@ void Player::SetFold(bool fold)
 	m_Fold = fold;
 }
 
+void Player::SetAction(CString action)
+{
+	m_Action = action;
+}
+
 CString Player::GetName()
 {
 	return m_Name;
@@ -49,4 +54,9 @@ int Player::GetBank()
 bool Player::IsFold()
 {
 	return m_Fold;
+}
+
+CString Player::GetAction()
+{
+	return m_Action;
 }

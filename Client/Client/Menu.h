@@ -1,5 +1,6 @@
 ﻿#pragma once
 
+#include "string"
 
 class Menu : public CDialogEx
 {

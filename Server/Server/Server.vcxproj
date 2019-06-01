@@ -183,6 +183,8 @@
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="Card.h" />
+    <ClInclude Include="Enums.h" />
     <ClInclude Include="Resource.h" />
     <ClInclude Include="Server.h" />
     <ClInclude Include="ServerDlg.h" />
@@ -190,6 +192,7 @@
     <ClInclude Include="targetver.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="Card.cpp" />
     <ClCompile Include="Server.cpp" />
     <ClCompile Include="ServerDlg.cpp" />
     <ClCompile Include="stdafx.cpp">

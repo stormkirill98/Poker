@@ -30,13 +30,13 @@
     <ClInclude Include="Menu.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Source Files</Filter>
-    </ClInclude>
     <ClInclude Include="Card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
     <ClInclude Include="Player.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Enums.h">
       <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>

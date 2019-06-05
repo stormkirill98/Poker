@@ -78,7 +78,7 @@ void Menu::OnClickedConnect()
 	WSADATA	wsd;
 
 	struct sockaddr_in 	server;
-	struct hostent		*host = NULL;
+	struct hostent *host = NULL;
 
 	char Str[256];
 
@@ -131,7 +131,9 @@ void Menu::OnClickedConnect()
 	m_UserName.GetWindowTextA((LPTSTR)m_UserNameStr.c_str(), sizeof(m_UserNameStr.c_str()));
 
 	std::string successMsg = "Success connect to ";
-	successMsg.append(host->h_name);
+	if (host != NULL) {
+		successMsg.append(host->h_name);
+	}
 	AfxMessageBox((LPSTR)successMsg.c_str(), MB_ICONINFORMATION);
 
 	this->OnCancel();

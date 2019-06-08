@@ -1,17 +1,17 @@
 #include "stdafx.h"
-#include "DefineCombinahion.h"
+#include "DefineCombination.h"
 
 
-DefineCombinahion::DefineCombinahion()
+DefineCombination::DefineCombination()
 {
 }
 
 
-DefineCombinahion::~DefineCombinahion()
+DefineCombination::~DefineCombination()
 {
 }
 
-bool DefineCombinahion::ContainsCard(vector<Card> cards, int suit, int rank) {
+bool DefineCombination::ContainsCard(vector<Card> cards, int suit, int rank) {
 	for (Card card : cards) {
 		if (suit == -1) {
 			if (card.m_Rank == rank) {
@@ -28,7 +28,7 @@ bool DefineCombinahion::ContainsCard(vector<Card> cards, int suit, int rank) {
 	return false;
 }
 
-bool DefineCombinahion::RoyalFlush(vector<Card> cards) {
+bool DefineCombination::RoyalFlush(vector<Card> cards) {
 	bool isRoyalFlush;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -54,7 +54,7 @@ bool DefineCombinahion::RoyalFlush(vector<Card> cards) {
 	return false;
 }
 
-int DefineCombinahion::StraightFlush(vector<Card> cards) {
+int DefineCombination::StraightFlush(vector<Card> cards) {
 	bool isStraightFlush;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -78,7 +78,7 @@ int DefineCombinahion::StraightFlush(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombinahion::Kare(vector<Card> cards) {
+int DefineCombination::Kare(vector<Card> cards) {
 	bool isKare;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -102,7 +102,7 @@ int DefineCombinahion::Kare(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombinahion::FullHouse(vector<Card> cards) {
+int DefineCombination::FullHouse(vector<Card> cards) {
 	int rankThree = -1;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -159,7 +159,7 @@ int DefineCombinahion::FullHouse(vector<Card> cards) {
 
 	return rankThree;
 }
-int DefineCombinahion::Flush(vector<Card> cards) {
+int DefineCombination::Flush(vector<Card> cards) {
 	int maxRank;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -191,7 +191,7 @@ int DefineCombinahion::Flush(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombinahion::Straight(vector<Card> cards) {
+int DefineCombination::Straight(vector<Card> cards) {
 	bool isStraight;
 
 	for (int i = 0; i < cards.size(); i++) {
@@ -214,7 +214,7 @@ int DefineCombinahion::Straight(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombinahion::Three(vector<Card> cards) {
+int DefineCombination::Three(vector<Card> cards) {
 	bool isThree;
 	int rank1 = -1;
 
@@ -274,7 +274,7 @@ int DefineCombinahion::Three(vector<Card> cards) {
 	}
 }
 
-int DefineCombinahion::TwoPair(vector<Card> cards) {
+int DefineCombination::TwoPair(vector<Card> cards) {
 	bool isPair;
 	int rank1 = -1;
 
@@ -365,7 +365,7 @@ int DefineCombinahion::TwoPair(vector<Card> cards) {
 	}
 }
 
-int DefineCombinahion::Pair(vector<Card> cards) {
+int DefineCombination::Pair(vector<Card> cards) {
 	bool isPair;
 	int rank = -1;
 
@@ -391,7 +391,7 @@ int DefineCombinahion::Pair(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombinahion::HighCard(vector<Card> cards) {
+int DefineCombination::HighCard(vector<Card> cards) {
 	int rank = -1;
 
 	for (int i = 0; i < cards.size(); i++) {

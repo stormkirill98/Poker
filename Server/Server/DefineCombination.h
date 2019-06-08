@@ -4,11 +4,11 @@
 
 using namespace std;
 
-class DefineCombinahion
+class DefineCombination
 {
 public:
-	DefineCombinahion();
-	~DefineCombinahion();
+	DefineCombination();
+	~DefineCombination();
 
 public:
 	static bool RoyalFlush(vector<Card> cards);

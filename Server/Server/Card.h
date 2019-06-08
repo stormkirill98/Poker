@@ -10,5 +10,3 @@ public:
 	int m_Suit;
 	int m_Rank;
 };
-
-

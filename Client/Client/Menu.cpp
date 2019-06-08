@@ -190,7 +190,7 @@ void Menu::OnClickedConnect()
 		int error = WSAGetLastError();
 		m_sClient = NULL;
 
-		if (error == 10061) {
+		if (error == WSAECONNREFUSED) {
 			sprintf_s(Str, sizeof(Str), "Server is not found");
 			AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 			return;

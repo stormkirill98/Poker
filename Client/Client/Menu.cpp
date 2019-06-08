@@ -9,7 +9,7 @@
 #include "winsock2.h"
 #include <conio.h>
 
-#define DEFAULT_PORT	5150
+#define DEFAULT_PORT 5150
 
 // Диалоговое окно Menu
 
@@ -32,16 +32,12 @@ void Menu::DoDataExchange(CDataExchange* pDX)
 	DDX_Control(pDX, IDC_SERVER_COMBO, m_ServerCombo);
 }
 
-
 BEGIN_MESSAGE_MAP(Menu, CDialogEx)
 	ON_BN_CLICKED(IDC_CONNECT, &Menu::OnClickedConnect)
 	ON_BN_CLICKED(IDC_DISCONNECT, &Menu::OnClickedDisconnect)
 	ON_BN_CLICKED(IDCANCEL, &Menu::OnBnClickedCancel)
 	ON_WM_CLOSE()
 END_MESSAGE_MAP()
-
-
-// Обработчики сообщений Menu
 
 BOOL Menu::OnInitDialog()
 {
@@ -141,7 +137,6 @@ void Menu::SetConnected(bool IsConnected)
 	m_Port.EnableWindow(!IsConnected);
 	GetDlgItem(IDC_CONNECT)->EnableWindow(!IsConnected);
 	GetDlgItem(IDC_DISCONNECT)->EnableWindow(IsConnected);
-
 }
 
 void Menu::OnClickedConnect()
@@ -210,6 +205,8 @@ void Menu::OnClickedDisconnect()
 
 void Menu::OnBnClickedCancel()
 {
+	WSACleanup();
+
 	CDialogEx::OnCancel();
 }
 

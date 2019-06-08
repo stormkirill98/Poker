@@ -391,16 +391,11 @@ int DefineCombination::Pair(vector<Card> cards) {
 	return -1;
 }
 
-int DefineCombination::HighCard(vector<Card> cards) {
-	int rank = -1;
-
-	for (int i = 0; i < cards.size(); i++) {
-		Card card = cards.at(i);
-
-		if (card.m_Rank > rank) {
-			rank = card.m_Rank;
-		}
+int DefineCombination::HighCard(Card handCard1, Card handCard2) {
+	if (handCard1.m_Rank > handCard2.m_Rank) {
+		return handCard1.m_Rank;
 	}
-
-	return rank;
+	else {
+		return handCard2.m_Rank;
+	}
 }

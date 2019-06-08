@@ -20,7 +20,7 @@ public:
 	static int Three(vector<Card> cards);
 	static int TwoPair(vector<Card> cards);
 	static int Pair(vector<Card> cards);
-	static int HighCard(vector<Card> cards);
+	static int HighCard(Card handCard1, Card handCard2);
 
 	static bool ContainsCard(vector<Card> cards, int suit, int rank);
 };

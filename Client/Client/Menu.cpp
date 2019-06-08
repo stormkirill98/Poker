@@ -118,7 +118,6 @@ void Menu::GetListPCIp()
 
 					char ip[128];
 					sprintf_s(ip, "%d.%d.%d.%d", a, b, c, d);
-					_cprintf(ip);
 					m_ServerCombo.AddString(ip);
 				}
 			}
@@ -163,6 +162,8 @@ void Menu::OnClickedConnect()
 	m_sClient = socket(AF_INET, SOCK_STREAM, IPPROTO_TCP);
 	if (m_sClient == INVALID_SOCKET)
 	{
+		m_sClient = NULL;
+
 		sprintf_s(Str, sizeof(Str), "socket() failed: %d\n", WSAGetLastError());
 		AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 		return;
@@ -176,6 +177,8 @@ void Menu::OnClickedConnect()
 		host = gethostbyname(szServer);
 		if (host == NULL)
 		{
+			m_sClient = NULL;
+
 			sprintf_s(Str, sizeof(Str), "Unable to resolve server: %s", szServer);
 			AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 			return;
@@ -184,7 +187,16 @@ void Menu::OnClickedConnect()
 	}
 	if (connect(m_sClient, (struct sockaddr *)&server, sizeof(server)) == SOCKET_ERROR)
 	{
-		sprintf_s(Str, sizeof(Str), "connect() failed: %d", WSAGetLastError());
+		int error = WSAGetLastError();
+		m_sClient = NULL;
+
+		if (error == 10061) {
+			sprintf_s(Str, sizeof(Str), "Server is not found");
+			AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
+			return;
+		}
+
+		sprintf_s(Str, sizeof(Str), "connect() failed: %d", error);
 		AfxMessageBox((LPTSTR)Str, MB_ICONSTOP);
 		return;
 	}

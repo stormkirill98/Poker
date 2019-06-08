@@ -1,4 +1,6 @@
 ﻿#pragma once
+#pragma comment(lib, "ws2_32.lib")
+#pragma comment(lib, "mpr.lib")
 
 #include "string"
 
@@ -29,7 +31,9 @@ public:
 	void	SetConnected(bool IsConnected);
 
 	CEdit m_Port;
-	CEdit m_Server;
+	CComboBox m_ServerCombo;
 	CEdit m_UserName;
 	virtual BOOL OnInitDialog();
+	void GetListPCIp();
+	afx_msg void OnClose();
 };

@@ -1,10 +1,13 @@
 ﻿// Menu.cpp: файл реализации
 //
 
+
 #include "stdafx.h"
 #include "Client.h"
 #include "Menu.h"
 #include "afxdialogex.h"
+#include "winsock2.h"
+#include <conio.h>
 
 #define DEFAULT_PORT	5150
 
@@ -26,8 +29,8 @@ void Menu::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_PORT, m_Port);
-	DDX_Control(pDX, IDC_SERVER, m_Server);
 	DDX_Control(pDX, IDC_USER_NAME, m_UserName);
+	DDX_Control(pDX, IDC_SERVER_COMBO, m_ServerCombo);
 }
 
 
@@ -35,6 +38,7 @@ BEGIN_MESSAGE_MAP(Menu, CDialogEx)
 	ON_BN_CLICKED(IDC_CONNECT, &Menu::OnClickedConnect)
 	ON_BN_CLICKED(IDC_DISCONNECT, &Menu::OnClickedDisconnect)
 	ON_BN_CLICKED(IDCANCEL, &Menu::OnBnClickedCancel)
+	ON_WM_CLOSE()
 END_MESSAGE_MAP()
 
 
@@ -44,12 +48,17 @@ BOOL Menu::OnInitDialog()
 {
 	CDialogEx::OnInitDialog();
 
+	WSADATA wsaData;
+	WSAStartup(MAKEWORD(1, 1), &wsaData);
+
+	GetListPCIp();
+
 	// TODO:  Добавить дополнительную инициализацию
 	char port[128];
 	sprintf_s(port, sizeof(port), "%d", DEFAULT_PORT);
 
 	m_Port.SetWindowTextA(LPTSTR(port));
-	m_Server.SetWindowTextA("localhost");
+	m_ServerCombo.SetWindowTextA("localhost");
 	m_UserName.SetWindowTextA(m_UserNameStr.c_str());
 
 	SetConnected(m_IsConnected);
@@ -58,11 +67,79 @@ BOOL Menu::OnInitDialog()
 				  // Исключение: страница свойств OCX должна возвращать значение FALSE
 }
 
+void Menu::GetListPCIp()
+{
+	std::string strTemp;
+	struct hostent *host;
+
+	struct in_addr *ptr; // To retrieve the IP Address 
+
+	DWORD dwScope = RESOURCE_CONTEXT;
+	NETRESOURCE *NetResource = NULL;
+	HANDLE hEnum;
+	WNetOpenEnum(dwScope, NULL, NULL,
+		NULL, &hEnum);
+
+	if (hEnum)
+	{
+		DWORD Count = 0xFFFFFFFF;
+		DWORD BufferSize = 2048;
+		LPVOID Buffer = new char[2048];
+		WNetEnumResource(hEnum, &Count, Buffer, &BufferSize);
+		NetResource = (NETRESOURCE*)Buffer;
+
+		char szHostName[200];
+		unsigned int i;
+
+		for (i = 0;
+			i < BufferSize / sizeof(NETRESOURCE);
+			i++, NetResource++)
+		{
+			if (NetResource->dwUsage ==
+				RESOURCEUSAGE_CONTAINER &&
+				NetResource->dwType ==
+				RESOURCETYPE_ANY)
+			{
+				if (NetResource->lpRemoteName)
+				{
+					std::string strFullName = NetResource->lpRemoteName;
+					if (0 == strFullName.substr(0, 2).compare("\\\\"))
+						strFullName = strFullName.substr(2);
+
+					gethostname(szHostName, strlen(szHostName));
+
+					int error = WSAGetLastError();
+
+					host = gethostbyname(strFullName.c_str());
+
+					if (host == NULL) continue;
+					ptr = (struct in_addr *)
+						host->h_addr_list[0];
+
+					// Eg. 211.40.35.76 split up like this.             
+					int a = ptr->S_un.S_un_b.s_b1;  // 211           
+					int b = ptr->S_un.S_un_b.s_b2;  // 40
+					int c = ptr->S_un.S_un_b.s_b3;  // 35
+					int d = ptr->S_un.S_un_b.s_b4;  // 76
+
+					char ip[128];
+					sprintf_s(ip, "%d.%d.%d.%d", a, b, c, d);
+					_cprintf(ip);
+					m_ServerCombo.AddString(ip);
+				}
+			}
+		}
+
+		delete Buffer;
+		WNetCloseEnum(hEnum);
+	}
+}
+
 void Menu::SetConnected(bool IsConnected)
 {
 	m_IsConnected = IsConnected;
 
-	m_Server.EnableWindow(!IsConnected);
+	m_ServerCombo.EnableWindow(!IsConnected);
 	m_Port.EnableWindow(!IsConnected);
 	m_UserName.EnableWindow(!IsConnected);
 	GetDlgItem(IDC_CONNECT)->EnableWindow(!IsConnected);
@@ -82,18 +159,12 @@ void Menu::OnClickedConnect()
 
 	char Str[256];
 
-	m_Server.GetWindowText(szServer, sizeof(szServer));
+	m_ServerCombo.GetWindowText(szServer, sizeof(szServer));
 	m_Port.GetWindowText(Str, sizeof(Str));
 	iPort = atoi(Str);
 	if (iPort <= 0 || iPort >= 0x10000)
 	{
 		AfxMessageBox((LPTSTR)"Port number incorrect", MB_ICONSTOP);
-		return;
-	}
-
-	if (WSAStartup(MAKEWORD(2, 2), &wsd) != 0)
-	{
-		AfxMessageBox((LPTSTR)"Failed to load Winsock library!", MB_ICONSTOP);
 		return;
 	}
 
@@ -130,10 +201,7 @@ void Menu::OnClickedConnect()
 
 	m_UserName.GetWindowTextA((LPTSTR)m_UserNameStr.c_str(), sizeof(m_UserNameStr.c_str()));
 
-	std::string successMsg = "Success connect to ";
-	if (host != NULL) {
-		successMsg.append(host->h_name);
-	}
+	std::string successMsg = "Success connect";
 	AfxMessageBox((LPSTR)successMsg.c_str(), MB_ICONINFORMATION);
 
 	this->OnCancel();
@@ -143,7 +211,6 @@ void Menu::OnClickedConnect()
 void Menu::OnClickedDisconnect()
 {
 	closesocket(m_sClient);
-	WSACleanup();
 	SetConnected(false);
 }
 
@@ -151,4 +218,11 @@ void Menu::OnClickedDisconnect()
 void Menu::OnBnClickedCancel()
 {
 	CDialogEx::OnCancel();
+}
+
+void Menu::OnClose()
+{
+	WSACleanup();
+
+	CDialogEx::OnClose();
 }

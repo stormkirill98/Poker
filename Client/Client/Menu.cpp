@@ -29,7 +29,6 @@ void Menu::DoDataExchange(CDataExchange* pDX)
 {
 	CDialogEx::DoDataExchange(pDX);
 	DDX_Control(pDX, IDC_PORT, m_Port);
-	DDX_Control(pDX, IDC_USER_NAME, m_UserName);
 	DDX_Control(pDX, IDC_SERVER_COMBO, m_ServerCombo);
 }
 
@@ -59,7 +58,6 @@ BOOL Menu::OnInitDialog()
 
 	m_Port.SetWindowTextA(LPTSTR(port));
 	m_ServerCombo.SetWindowTextA("localhost");
-	m_UserName.SetWindowTextA(m_UserNameStr.c_str());
 
 	SetConnected(m_IsConnected);
 
@@ -141,7 +139,6 @@ void Menu::SetConnected(bool IsConnected)
 
 	m_ServerCombo.EnableWindow(!IsConnected);
 	m_Port.EnableWindow(!IsConnected);
-	m_UserName.EnableWindow(!IsConnected);
 	GetDlgItem(IDC_CONNECT)->EnableWindow(!IsConnected);
 	GetDlgItem(IDC_DISCONNECT)->EnableWindow(IsConnected);
 
@@ -199,21 +196,17 @@ void Menu::OnClickedConnect()
 
 	SetConnected(true);
 
-	m_UserName.GetWindowTextA((LPTSTR)m_UserNameStr.c_str(), sizeof(m_UserNameStr.c_str()));
-
 	std::string successMsg = "Success connect";
 	AfxMessageBox((LPSTR)successMsg.c_str(), MB_ICONINFORMATION);
 
 	this->OnCancel();
 }
 
-
 void Menu::OnClickedDisconnect()
 {
 	closesocket(m_sClient);
 	SetConnected(false);
 }
-
 
 void Menu::OnBnClickedCancel()
 {

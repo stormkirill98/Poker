@@ -33,9 +33,6 @@
     <ClInclude Include="Card.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-    <ClInclude Include="Enums.h">
-      <Filter>Header Files</Filter>
-    </ClInclude>
     <ClInclude Include="DefineCombination.h">
       <Filter>Header Files</Filter>
     </ClInclude>

@@ -32,7 +32,6 @@ public:
 
 	CEdit m_Port;
 	CComboBox m_ServerCombo;
-	CEdit m_UserName;
 	virtual BOOL OnInitDialog();
 	void GetListPCIp();
 	afx_msg void OnClose();

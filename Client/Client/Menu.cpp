@@ -46,7 +46,7 @@ BOOL Menu::OnInitDialog()
 	WSADATA wsaData;
 	WSAStartup(MAKEWORD(1, 1), &wsaData);
 
-	GetListPCIp();
+	//GetListPCIp();
 
 	// TODO:  Добавить дополнительную инициализацию
 	char port[128];

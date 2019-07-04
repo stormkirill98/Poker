@@ -6,8 +6,8 @@ Player::Player()
 {
 }
 
-Player::Player(std::string ip)
-	: m_Ip(ip)
+Player::Player(int sct)
+	: m_Sct(sct)
 {
 }
 
@@ -31,9 +31,9 @@ void Player::SetFold(bool fold)
 	m_Fold = fold;
 }
 
-std::string Player::GetIp()
+int Player::GetSct()
 {
-	return m_Ip;
+	return m_Sct;
 }
 
 int Player::GetBet()

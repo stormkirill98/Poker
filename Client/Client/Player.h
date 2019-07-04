@@ -6,11 +6,11 @@ class Player
 {
 public:
 	Player();
-	Player(std::string ip);
+	Player(int sct);
 	~Player();
 
 private:
-	std::string m_Ip;
+	int m_Sct;
 
 	int m_Bet = 0;
 	int m_Bank = 0;
@@ -23,7 +23,7 @@ public:
 	void SetFold(bool fold);
 
 public:
-	std::string GetIp();
+	int GetSct();
 	int GetBet();
 	int GetBank();
 	bool IsFold();
